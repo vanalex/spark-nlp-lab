@@ -1,9 +1,9 @@
-package com.vanalex.languages
+package com.vanalex.pipeline.languages
 
 import com.johnsnowlabs.nlp.DocumentAssembler
 import com.johnsnowlabs.nlp.annotator.LanguageDetectorDL
 import com.vanalex.config.{Path, SparkSessionWrapper}
-import com.vanalex.pipeline.PipelineBuilder.builder
+import com.vanalex.pipeline.PipelineBuilder.build
 import com.vanalex.util.Reader
 
 object LanguageDetectorPipeline extends SparkSessionWrapper {
@@ -18,7 +18,7 @@ object LanguageDetectorPipeline extends SparkSessionWrapper {
       .setInputCols("document")
       .setOutputCol("language")
 
-    val pipeline = builder(Array(documentAssembler, languageDetector))
+    val pipeline = build(Array(documentAssembler, languageDetector))
     val result = pipeline.fit(data).transform(data)
 
     result.select("language.result").show(false)
